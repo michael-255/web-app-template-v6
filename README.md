@@ -1,6 +1,6 @@
-# web-app-template-v6
+# Web App Template `v6`
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue 3 web application template to use as a starting point for new projects.
 
 ## Post Cloning Steps
 
