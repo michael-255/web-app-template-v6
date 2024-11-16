@@ -2,18 +2,6 @@
 
 This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
 ## Project Setup
 
 ```sh
@@ -43,3 +31,45 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+
+## Project Creation Steps
+
+1. Install Vue
+
+   Create the Vue project directory and initial files.
+
+   - Navigate to the directory you would like to create the project in
+   - Run the create Vue command
+   - Use the selections you would like for your project
+   - Navigate into your project directory and install the dependencies
+
+   ```sh
+   npm create vue@latest
+   ```
+
+2. Install Quasar
+
+   ```sh
+   npm install --save quasar @quasar/extras
+   npm install --save-dev @quasar/vite-plugin sass-embedded@^1.80.2
+   ```
+
+3. Setup GitHub Pages
+
+   Configure GitHub Pages to deploy using GitHub Actions.
+
+   - Add `base: '/REPO_NAME/'` to `vite.config.ts`
+   - In GitHub for this repository, go to `Settings` > `Pages`
+   - Under `Build and Deployment` > `Source`, select `GitHub Actions`
+   - Create this workflow file in `~/.github/workflows/deploy-github-pages.yml`
+
+4. Install Other Dependencies
+
+## Icons
+
+Use the following site to help with application icons:
+<https://realfavicongenerator.net/>
+
+## Credits
+
+Base `Web App Template` created by Michael Joy (michael-255 on GitHub)
