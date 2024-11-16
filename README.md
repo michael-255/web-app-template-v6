@@ -2,6 +2,43 @@
 
 This template should help get you started developing with Vue 3 in Vite.
 
+## Post Cloning Steps
+
+- [ ] Update `package.json`
+
+  - [ ] `name`
+  - [ ] `description`
+  - [ ] `version`
+  - [ ] `repository`
+  - [ ] `bugs`
+  - [ ] `homepage`
+
+- [ ] Update specific files
+
+  - [ ] `base` in `~/vite.config.ts` to your repository name for deployments
+  - [ ] `AppName` and `AppDescription` in `~/src/constants/global.ts`
+  - [ ] `name` and `short_name` in `~/public/manifest.json`
+  - [ ] `start_url` in `~/public/manifest.json` to deployed website address
+
+- [ ] Update `GitHub` repository settings
+
+  - [ ] Description
+  - [ ] Website (Use GitHub Pages)
+  - [ ] Topic keywords
+  - [ ] Update the `Include in the home page` section
+
+    - [ ] Uncheck `Releases`
+    - [ ] Uncheck `Packages`
+    - [ ] Keep `Deployments` (for GitHub Pages)
+
+- [ ] Update `README.md`
+
+  - [ ] Change README main heading to your project name
+  - [ ] Add detailed project description
+  - [ ] Update the `Credits` section as needed
+  - [ ] Remove unneeded `Post Cloning Steps` section
+  - [ ] Remove unneeded `Project Creation Steps` section and ToC links
+
 ## Project Setup
 
 ```sh
@@ -61,7 +98,7 @@ npm run lint
    - Add `base: '/REPO_NAME/'` to `vite.config.ts`
    - In GitHub for this repository, go to `Settings` > `Pages`
    - Under `Build and Deployment` > `Source`, select `GitHub Actions`
-   - Create this workflow file in `~/.github/workflows/deploy-github-pages.yml`
+   - Create workflow file in `~/.github/workflows/deploy-github-pages.yml`
 
 4. Install Other Dependencies
 
