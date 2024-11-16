@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExampleResultServInst } from '@/services/ExampleResultService'
+import { ExampleResultSI } from '@/services/ExampleResultService'
 import { chartsIcon, closeIcon } from '@/shared/icons'
 import type { ExampleResultType } from '@/shared/types'
 import { compactDateFromMs } from '@/shared/utils'
@@ -33,26 +33,25 @@ const subscriptionFinished = ref(false)
 const liveRecords: Ref<ExampleResultType[]> = ref([])
 const hasRecords = ref(false)
 
-const subscription =
-  ExampleResultServInst.liveTable<ExampleResultType>().subscribe({
-    next: (records) => {
-      liveRecords.value = records
-      subscriptionFinished.value = true
-      if (liveRecords.value.length > 0) {
-        hasRecords.value = true
-      } else {
-        hasRecords.value = false
-      }
-    },
-    error: (error) => {
-      log.error(
-        `Error loading live ${ExampleResultServInst.labelPlural} data`,
-        error as Error,
-      )
-      subscriptionFinished.value = true
+const subscription = ExampleResultSI.liveTable<ExampleResultType>().subscribe({
+  next: (records) => {
+    liveRecords.value = records
+    subscriptionFinished.value = true
+    if (liveRecords.value.length > 0) {
+      hasRecords.value = true
+    } else {
       hasRecords.value = false
-    },
-  })
+    }
+  },
+  error: (error) => {
+    log.error(
+      `Error loading live ${ExampleResultSI.labelPlural} data`,
+      error as Error,
+    )
+    subscriptionFinished.value = true
+    hasRecords.value = false
+  },
+})
 
 const chartOptions: ChartOptions<'scatter'> = {
   responsive: true,
@@ -65,7 +64,7 @@ const chartOptions: ChartOptions<'scatter'> = {
   plugins: {
     title: {
       display: true,
-      text: `${ExampleResultServInst.labelSingular} Activity - Last 3 Months`,
+      text: `${ExampleResultSI.labelSingular} Activity - Last 3 Months`,
       color: 'white',
       font: {
         size: 14,
@@ -123,7 +122,7 @@ const chartData: ComputedRef<ChartData<'scatter', { x: number; y: number }[]>> =
     return {
       datasets: [
         {
-          label: ExampleResultServInst.labelPlural,
+          label: ExampleResultSI.labelPlural,
           backgroundColor: colors.getPaletteColor('primary'),
           data: liveRecords.value.map((record) => ({
             x: record.createdAt,

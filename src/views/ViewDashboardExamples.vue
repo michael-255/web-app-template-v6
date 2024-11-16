@@ -4,8 +4,8 @@ import DashboardEmptyMessage from '@/components/dashboard/DashboardEmptyMessage.
 import PageFabMenu from '@/components/page/PageFabMenu.vue'
 import PageHeading from '@/components/page/PageHeading.vue'
 import PageResponsive from '@/components/page/PageResponsive.vue'
-import { ExampleResultServInst } from '@/services/ExampleResultService'
-import { ExampleServInst } from '@/services/ExampleService'
+import { ExampleResultSI } from '@/services/ExampleResultService'
+import { ExampleSI } from '@/services/ExampleService'
 import { appName } from '@/shared/constants'
 import { RouteNameEnum, StatusEnum, TableEnum } from '@/shared/enums'
 import { addIcon, examplesPageIcon } from '@/shared/icons'
@@ -23,7 +23,7 @@ const { log } = useLogger()
 
 const subscriptionFinished = ref(false)
 const liveExamples: Ref<ExampleType[]> = ref([])
-const subscription = ExampleServInst.liveDashboard<ExampleType>().subscribe({
+const subscription = ExampleSI.liveDashboard<ExampleType>().subscribe({
   next: (examples) => {
     liveExamples.value = examples
     subscriptionFinished.value = true
@@ -47,7 +47,7 @@ onUnmounted(() => {
         {
           label: 'Examples Data',
           color: 'primary',
-          icon: ExampleServInst.tableIcon,
+          icon: ExampleSI.tableIcon,
           handleClick: () =>
             router.push({
               name: RouteNameEnum.TABLE,
@@ -57,7 +57,7 @@ onUnmounted(() => {
         {
           label: 'Example Results Data',
           color: 'primary',
-          icon: ExampleResultServInst.tableIcon,
+          icon: ExampleResultSI.tableIcon,
           handleClick: () =>
             router.push({
               name: RouteNameEnum.TABLE,
@@ -68,7 +68,7 @@ onUnmounted(() => {
           label: 'Create Example',
           color: 'positive',
           icon: addIcon,
-          handleClick: () => $q.dialog(ExampleServInst.createDialogOptions()),
+          handleClick: () => $q.dialog(ExampleSI.createDialogOptions()),
         },
       ]"
     />
@@ -85,7 +85,7 @@ onUnmounted(() => {
         ]"
         buttonLabel="Create Example"
         buttonColor="positive"
-        @onEmptyAction="() => $q.dialog(ExampleServInst.createDialogOptions())"
+        @onEmptyAction="() => $q.dialog(ExampleSI.createDialogOptions())"
       />
 
       <q-item v-for="example in liveExamples" :key="example.id">
@@ -99,31 +99,25 @@ onUnmounted(() => {
             :hasLastChild="!!example?.lastChild"
             :hasLockedStatus="example.status.includes(StatusEnum.LOCKED)"
             :hasFavoriteStatus="example.status.includes(StatusEnum.FAVORITED)"
-            :supportsCharts="ExampleServInst.supportsCharts"
-            :supportsInspect="ExampleServInst.supportsInspect"
-            :supportsEdit="ExampleServInst.supportsEdit"
-            :supportsDelete="ExampleServInst.supportsDelete"
+            :supportsCharts="ExampleSI.supportsCharts"
+            :supportsInspect="ExampleSI.supportsInspect"
+            :supportsEdit="ExampleSI.supportsEdit"
+            :supportsDelete="ExampleSI.supportsDelete"
             @onCharts="
-              () => $q.dialog(ExampleServInst.chartsDialogOptions(example.id))
+              () => $q.dialog(ExampleSI.chartsDialogOptions(example.id))
             "
             @onInspect="
-              () => $q.dialog(ExampleServInst.inspectDialogOptions(example.id))
+              () => $q.dialog(ExampleSI.inspectDialogOptions(example.id))
             "
-            @onEdit="
-              () => $q.dialog(ExampleServInst.editDialogOptions(example.id))
-            "
+            @onEdit="() => $q.dialog(ExampleSI.editDialogOptions(example.id))"
             @onDelete="
-              () => $q.dialog(ExampleServInst.deleteDialogOptions(example.id))
+              () => $q.dialog(ExampleSI.deleteDialogOptions(example.id))
             "
             @onFavorite="
-              () =>
-                $q.dialog(
-                  ExampleServInst.toggleFavoriteDialogOptions(example.id),
-                )
+              () => $q.dialog(ExampleSI.toggleFavoriteDialogOptions(example.id))
             "
             @onAddEntry="
-              () =>
-                $q.dialog(ExampleResultServInst.createDialogOptions(example.id))
+              () => $q.dialog(ExampleResultSI.createDialogOptions(example.id))
             "
           />
         </q-item-section>

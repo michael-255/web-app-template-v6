@@ -1,5 +1,5 @@
 import { Log } from '@/models/Log'
-import { LogServInst } from '@/services/LogService'
+import { LogSI } from '@/services/LogService'
 import { appName } from '@/shared/constants'
 import { LogLevelEnum } from '@/shared/enums'
 import { debugIcon, errorIcon, infoIcon, warnIcon } from '@/shared/icons'
@@ -76,7 +76,7 @@ export default function useLogger() {
         label: name,
         details,
       })
-      await LogServInst.addRecord(log)
+      await LogSI.addRecord(log)
       if (settingsStore.infoMessages) {
         notify({ message: name, icon: infoIcon, color: 'info' })
       }
@@ -97,7 +97,7 @@ export default function useLogger() {
         label: name,
         details,
       })
-      await LogServInst.addRecord(log)
+      await LogSI.addRecord(log)
       notify({ message: name, icon: warnIcon, color: 'warning' })
     },
 
@@ -116,7 +116,7 @@ export default function useLogger() {
         label: name,
         details,
       })
-      await LogServInst.addRecord(log)
+      await LogSI.addRecord(log)
       notify({ message: name, icon: errorIcon, color: 'negative' })
     },
   }

@@ -190,4 +190,4 @@ export class ExampleService extends BaseService {
 /**
  * Singleton instance exported for convenience.
  */
-export const ExampleServInst = ExampleService.instance()
+export const ExampleSI = ExampleService.instance()

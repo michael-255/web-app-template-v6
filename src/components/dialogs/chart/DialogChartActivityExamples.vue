@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExampleServInst } from '@/services/ExampleService'
+import { ExampleSI } from '@/services/ExampleService'
 import { chartsIcon, closeIcon } from '@/shared/icons'
 import type { ExampleType } from '@/shared/types'
 import { compactDateFromMs } from '@/shared/utils'
@@ -33,7 +33,7 @@ const subscriptionFinished = ref(false)
 const liveRecords: Ref<ExampleType[]> = ref([])
 const hasRecords = ref(false)
 
-const subscription = ExampleServInst.liveTable<ExampleType>().subscribe({
+const subscription = ExampleSI.liveTable<ExampleType>().subscribe({
   next: (records) => {
     liveRecords.value = records
     subscriptionFinished.value = true
@@ -45,7 +45,7 @@ const subscription = ExampleServInst.liveTable<ExampleType>().subscribe({
   },
   error: (error) => {
     log.error(
-      `Error loading live ${ExampleServInst.labelPlural} data`,
+      `Error loading live ${ExampleSI.labelPlural} data`,
       error as Error,
     )
     subscriptionFinished.value = true
@@ -64,7 +64,7 @@ const chartOptions: ChartOptions<'scatter'> = {
   plugins: {
     title: {
       display: true,
-      text: `${ExampleServInst.labelSingular} Activity - Last 3 Months`,
+      text: `${ExampleSI.labelSingular} Activity - Last 3 Months`,
       color: 'white',
       font: {
         size: 14,
@@ -122,7 +122,7 @@ const chartData: ComputedRef<ChartData<'scatter', { x: number; y: number }[]>> =
     return {
       datasets: [
         {
-          label: ExampleServInst.labelPlural,
+          label: ExampleSI.labelPlural,
           backgroundColor: colors.getPaletteColor('primary'),
           data: liveRecords.value.map((record) => ({
             x: record.createdAt,

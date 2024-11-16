@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LogServInst } from '@/services/LogService'
+import { LogSI } from '@/services/LogService'
 import { LogLevelEnum } from '@/shared/enums'
 import { chartsIcon, closeIcon } from '@/shared/icons'
 import type { LogType } from '@/shared/types'
@@ -34,7 +34,7 @@ const subscriptionFinished = ref(false)
 const liveRecords: Ref<LogType[]> = ref([])
 const hasRecords = ref(false)
 
-const subscription = LogServInst.liveTable<LogType>().subscribe({
+const subscription = LogSI.liveTable<LogType>().subscribe({
   next: (records) => {
     liveRecords.value = records
     subscriptionFinished.value = true
@@ -45,10 +45,7 @@ const subscription = LogServInst.liveTable<LogType>().subscribe({
     }
   },
   error: (error) => {
-    log.error(
-      `Error loading live ${LogServInst.labelPlural} data`,
-      error as Error,
-    )
+    log.error(`Error loading live ${LogSI.labelPlural} data`, error as Error)
     subscriptionFinished.value = true
     hasRecords.value = false
   },

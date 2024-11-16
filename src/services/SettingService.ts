@@ -33,4 +33,4 @@ export class SettingService extends BaseService {
 /**
  * Singleton instance exported for convenience.
  */
-export const SettingServInst = SettingService.instance()
+export const SettingSI = SettingService.instance()

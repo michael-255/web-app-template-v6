@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExampleResultServInst } from '@/services/ExampleResultService'
+import { ExampleResultSI } from '@/services/ExampleResultService'
 import { chartsIcon, closeIcon } from '@/shared/icons'
 import type { IdType, ServiceType } from '@/shared/types'
 import { compactDateFromMs } from '@/shared/utils'
@@ -267,7 +267,7 @@ const chartDataAllTime: ComputedRef<
 onMounted(async () => {
   recordStore.record = await props.service.getRecord(props.id)
 
-  const exampleResultDatasets = await ExampleResultServInst.getChartDatasets(
+  const exampleResultDatasets = await ExampleResultSI.getChartDatasets(
     recordStore.record.id,
   )
   chartDatasetThreeMonths.value = exampleResultDatasets.threeMonths

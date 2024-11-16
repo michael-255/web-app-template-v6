@@ -6,10 +6,10 @@ import PageResponsive from '@/components/page/PageResponsive.vue'
 import { Example } from '@/models/Example'
 import { ExampleResult } from '@/models/ExampleResult'
 import { DB } from '@/services/db'
-import { ExampleResultServInst } from '@/services/ExampleResultService'
-import { ExampleServInst } from '@/services/ExampleService'
-import { LogServInst } from '@/services/LogService'
-import { SettingServInst } from '@/services/SettingService'
+import { ExampleResultSI } from '@/services/ExampleResultService'
+import { ExampleSI } from '@/services/ExampleService'
+import { LogSI } from '@/services/LogService'
+import { SettingSI } from '@/services/SettingService'
 import { appDatabaseVersion, appName } from '@/shared/constants'
 import {
   DurationEnum,
@@ -93,14 +93,10 @@ function onImportBackup() {
       const backup = JSON.parse(await importFile.value.text()) as BackupType
       log.silentDebug('backup:', backup)
 
-      const settingsImport = await SettingServInst.importData(
-        backup?.settings ?? [],
-      )
-      const logsImport = await LogServInst.importData(backup?.logs ?? [])
-      const examplesImport = await ExampleServInst.importData(
-        backup?.examples ?? [],
-      )
-      const exampleResultsImport = await ExampleResultServInst.importData(
+      const settingsImport = await SettingSI.importData(backup?.settings ?? [])
+      const logsImport = await LogSI.importData(backup?.logs ?? [])
+      const examplesImport = await ExampleSI.importData(backup?.examples ?? [])
+      const exampleResultsImport = await ExampleResultSI.importData(
         backup?.exampleResults ?? [],
       )
 
@@ -183,10 +179,10 @@ function onExportBackup() {
         appName: appName,
         databaseVersion: appDatabaseVersion,
         createdAt: Date.now(),
-        settings: await SettingServInst.exportData(),
-        logs: await LogServInst.exportData(),
-        examples: await ExampleServInst.exportData(),
-        exampleResults: await ExampleResultServInst.exportData(),
+        settings: await SettingSI.exportData(),
+        logs: await LogSI.exportData(),
+        examples: await ExampleSI.exportData(),
+        exampleResults: await ExampleResultSI.exportData(),
       }
 
       log.silentDebug('backup:', backup)
@@ -227,7 +223,7 @@ function onDeleteLogs() {
   }).onOk(async () => {
     try {
       $q.loading.show()
-      await LogServInst.clearTable()
+      await LogSI.clearTable()
       log.info('Successfully deleted Logs')
     } catch (error) {
       log.error(`Error deleting Logs`, error as Error)
@@ -255,7 +251,7 @@ function onDeleteData() {
       $q.loading.show()
       const tables = Object.values(TableEnum)
       await Promise.all(tables.map(async (table) => DB.table(table).clear()))
-      await SettingServInst.initialize() // Re-initialize settings immediately
+      await SettingSI.initialize() // Re-initialize settings immediately
       log.info('Successfully deleted data')
     } catch (error) {
       log.error(`Error deleting data`, error as Error)
@@ -332,8 +328,8 @@ async function createTestData() {
     )
   }
 
-  await ExampleServInst.addRecord(example)
-  await ExampleResultServInst.importData(exampleResults)
+  await ExampleSI.addRecord(example)
+  await ExampleResultSI.importData(exampleResults)
   log.debug('Test Example added with debug', example)
   log.warn('Test Example added with warn', example)
   log.info('Test Example added with info', example)
@@ -401,7 +397,7 @@ async function createTestData() {
           <q-toggle
             :model-value="settingsStore.advancedMode"
             @update:model-value="
-              SettingServInst.putRecord({
+              SettingSI.putRecord({
                 id: SettingIdEnum.ADVANCED_MODE,
                 value: $event,
               })
@@ -424,7 +420,7 @@ async function createTestData() {
           <q-toggle
             :model-value="settingsStore.instructionsOverlay"
             @update:model-value="
-              SettingServInst.putRecord({
+              SettingSI.putRecord({
                 id: SettingIdEnum.INSTRUCTIONS_OVERLAY,
                 value: $event,
               })
@@ -447,7 +443,7 @@ async function createTestData() {
           <q-toggle
             :model-value="settingsStore.infoMessages"
             @update:model-value="
-              SettingServInst.putRecord({
+              SettingSI.putRecord({
                 id: SettingIdEnum.INFO_MESSAGES,
                 value: $event,
               })
@@ -470,7 +466,7 @@ async function createTestData() {
           <q-toggle
             :model-value="settingsStore.consoleLogs"
             @update:model-value="
-              SettingServInst.putRecord({
+              SettingSI.putRecord({
                 id: SettingIdEnum.CONSOLE_LOGS,
                 value: $event,
               })
@@ -493,7 +489,7 @@ async function createTestData() {
           <q-select
             :model-value="settingsStore.logRetentionDuration"
             @update:model-value="
-              SettingServInst.putRecord({
+              SettingSI.putRecord({
                 id: SettingIdEnum.LOG_RETENTION_DURATION,
                 value: $event,
               })

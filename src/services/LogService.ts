@@ -92,4 +92,4 @@ export class LogService extends BaseService {
 /**
  * Singleton instance exported for convenience.
  */
-export const LogServInst = LogService.instance()
+export const LogSI = LogService.instance()

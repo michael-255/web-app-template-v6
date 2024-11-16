@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DialogInstructionsOverlay from '@/components/dialogs/DialogInstructionsOverlay.vue'
-import { LogServInst } from '@/services/LogService'
-import { SettingServInst } from '@/services/SettingService'
+import { LogSI } from '@/services/LogService'
+import { SettingSI } from '@/services/SettingService'
 import { appDescription } from '@/shared/constants'
 import { errorIcon } from '@/shared/icons'
 import { useSettingsStore } from '@/stores/settings'
@@ -70,14 +70,14 @@ const { log } = useLogger()
 const settingsStore = useSettingsStore()
 
 // Loading live Settings into the store on startup for use throughout the app.
-const subscription = SettingServInst.liveTable<SettingType>().subscribe({
+const subscription = SettingSI.liveTable<SettingType>().subscribe({
   next: (records) => (settingsStore.settings = records),
   error: (error) => log.error(`Error loading live Settings`, error as Error),
 })
 
 onMounted(async () => {
   try {
-    await SettingServInst.initialize()
+    await SettingSI.initialize()
   } catch (error) {
     // Output the error and notify user since it could be a database or logger failure
     notify({
@@ -89,7 +89,7 @@ onMounted(async () => {
   }
 
   try {
-    const logsPurged = await LogServInst.purge()
+    const logsPurged = await LogSI.purge()
     log.silentDebug('Expired logs purged', { logsPurged })
   } catch (error) {
     log.error('Error purging expired logs', error as Error)

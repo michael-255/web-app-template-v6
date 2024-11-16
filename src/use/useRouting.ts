@@ -1,7 +1,7 @@
-import { ExampleResultServInst } from '@/services/ExampleResultService'
-import { ExampleServInst } from '@/services/ExampleService'
-import { LogServInst } from '@/services/LogService'
-import { SettingServInst } from '@/services/SettingService'
+import { ExampleResultSI } from '@/services/ExampleResultService'
+import { ExampleSI } from '@/services/ExampleService'
+import { LogSI } from '@/services/LogService'
+import { SettingSI } from '@/services/SettingService'
 import { RouteNameEnum, TableEnum } from '@/shared/enums'
 import type { ServiceType } from '@/shared/types'
 import useLogger from '@/use/useLogger'
@@ -23,16 +23,16 @@ export default function useRouting() {
 
   switch (routeTable) {
     case TableEnum.SETTINGS:
-      routeService = SettingServInst
+      routeService = SettingSI
       break
     case TableEnum.LOGS:
-      routeService = LogServInst
+      routeService = LogSI
       break
     case TableEnum.EXAMPLES:
-      routeService = ExampleServInst
+      routeService = ExampleSI
       break
     case TableEnum.EXAMPLE_RESULTS:
-      routeService = ExampleResultServInst
+      routeService = ExampleResultSI
       break
   }
 
