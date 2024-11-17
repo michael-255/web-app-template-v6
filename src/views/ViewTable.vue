@@ -17,15 +17,14 @@ import {
   recordsCount,
   visibleColumnsFromTableColumns,
 } from '@/shared/utils'
-import useLogger from '@/use/useLogger'
+import useLiveQuery from '@/use/useLiveQuery'
 import useRouting from '@/use/useRouting'
 import { useMeta, type QTableColumn } from 'quasar'
-import { computed, onUnmounted, ref, type Ref } from 'vue'
+import { computed, ref, type Ref } from 'vue'
 import type { z } from 'zod'
 
 useMeta({ title: `${appName} - Data Table` })
 
-const { log } = useLogger()
 const { routeService, goBack } = useRouting()
 
 const searchFilter: Ref<string> = ref('')
@@ -35,19 +34,11 @@ const columnOptions: Ref<QTableColumn[]> = ref(
 const visibleColumns: Ref<string[]> = ref(
   visibleColumnsFromTableColumns(routeService.tableColumns),
 )
-const liveRows: Ref<Record<string, any>[]> = ref([])
 
-const subscription = routeService
-  .liveTable<z.infer<typeof routeService.modelSchema>>()
-  .subscribe({
-    next: (records: Record<string, any>[]) => (liveRows.value = records),
-    error: (error: Error) =>
-      log.error(`Error loading live ${routeService.labelPlural} data`, error),
-  })
-
-onUnmounted(() => {
-  subscription.unsubscribe()
-})
+const { liveData } = useLiveQuery<z.infer<typeof routeService.modelSchema>>(
+  routeService,
+  'liveTable',
+)
 
 const supportsActions = computed(() => {
   return (
@@ -70,7 +61,7 @@ function hasNoChildData(row: { lastChild?: any }) {
 <template>
   <q-table
     fullscreen
-    :rows="liveRows"
+    :rows="liveData"
     :columns="routeService.tableColumns"
     :visible-columns="visibleColumns"
     :rows-per-page-options="[0]"
@@ -177,7 +168,7 @@ function hasNoChildData(row: { lastChild?: any }) {
 
       <div class="row justify-start full-width">
         <q-input
-          :disable="!liveRows.length"
+          :disable="!liveData.length"
           outlined
           dense
           clearable
@@ -191,7 +182,7 @@ function hasNoChildData(row: { lastChild?: any }) {
               v-if="routeService.supportsColumnFilters"
               v-model="visibleColumns"
               :options="columnOptions"
-              :disable="!liveRows.length"
+              :disable="!liveData.length"
               multiple
               dense
               options-dense
@@ -208,7 +199,7 @@ function hasNoChildData(row: { lastChild?: any }) {
 
             <q-btn
               v-if="routeService.supportsActivityCharts"
-              :disable="!liveRows.length"
+              :disable="!liveData.length"
               :icon="chartsIcon"
               color="cyan"
               class="q-px-sm q-ml-xs"
@@ -235,7 +226,7 @@ function hasNoChildData(row: { lastChild?: any }) {
     <template v-slot:bottom>
       {{
         recordsCount(
-          liveRows,
+          liveData,
           routeService.labelSingular,
           routeService.labelPlural,
         )

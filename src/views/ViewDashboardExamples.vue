@@ -10,33 +10,18 @@ import { appName } from '@/shared/constants'
 import { RouteNameEnum, StatusEnum, TableEnum } from '@/shared/enums'
 import { addIcon, examplesPageIcon } from '@/shared/icons'
 import type { ExampleType } from '@/shared/types'
-import useLogger from '@/use/useLogger'
+import useLiveQuery from '@/use/useLiveQuery'
 import { useMeta, useQuasar } from 'quasar'
-import { onUnmounted, ref, type Ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 useMeta({ title: `${appName} - Examples Dashboard` })
 
 const $q = useQuasar()
 const router = useRouter()
-const { log } = useLogger()
-
-const subscriptionFinished = ref(false)
-const liveExamples: Ref<ExampleType[]> = ref([])
-const subscription = ExampleSI.liveDashboard<ExampleType>().subscribe({
-  next: (examples) => {
-    liveExamples.value = examples
-    subscriptionFinished.value = true
-  },
-  error: (error) => {
-    log.error('Error loading live Examples data', error as Error)
-    subscriptionFinished.value = true
-  },
-})
-
-onUnmounted(() => {
-  subscription.unsubscribe()
-})
+const { isLiveQueryFinished, liveData } = useLiveQuery<ExampleType>(
+  ExampleSI,
+  'liveDashboard',
+)
 </script>
 
 <template>
@@ -77,7 +62,7 @@ onUnmounted(() => {
 
     <q-list padding>
       <DashboardEmptyMessage
-        v-if="liveExamples && liveExamples.length == 0 && subscriptionFinished"
+        v-if="isLiveQueryFinished && liveData.length === 0"
         :title="`No Examples Found`"
         :messages="[
           'If this is your first time using the app, try creating a new Example below.',
@@ -88,7 +73,7 @@ onUnmounted(() => {
         @onEmptyAction="() => $q.dialog(ExampleSI.createDialogOptions())"
       />
 
-      <q-item v-for="example in liveExamples" :key="example.id">
+      <q-item v-for="example in liveData" :key="example.id">
         <q-item-section>
           <DashboardCard
             :recordName="example?.name"

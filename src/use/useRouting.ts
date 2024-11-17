@@ -7,6 +7,9 @@ import type { ServiceType } from '@/shared/types'
 import useLogger from '@/use/useLogger'
 import { useRoute, useRouter } from 'vue-router'
 
+/**
+ * Provides some routing utilities and access to the current route Service if any.
+ */
 export default function useRouting() {
   // Do NOT return route or router from any composable due to performance issues
   const route = useRoute()

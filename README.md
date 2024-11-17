@@ -2,6 +2,12 @@
 
 Vue 3 web application template to use as a starting point for new projects.
 
+## `TODO`
+
+- Create `_Base` components for all areas of the template app
+- Try using Observable Plot for charting
+  - All chart DB access can be in the individual chart components
+
 ## Post Cloning Steps
 
 - [ ] Update `package.json`
