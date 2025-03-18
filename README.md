@@ -4,6 +4,8 @@ Vue 3 web application template to use as a starting point for new projects.
 
 ## `TODO`
 
+- Create fresh project called `Web App Template v9`
+
 - Create `_Base` components for all areas of the template app
 - Try using Observable Plot for charting
   - All chart DB access can be in the individual chart components
@@ -43,7 +45,7 @@ Vue 3 web application template to use as a starting point for new projects.
   - [ ] Add detailed project description
   - [ ] Update the `Credits` section as needed
   - [ ] Remove unneeded `Post Cloning Steps` section
-  - [ ] Remove unneeded `Project Creation Steps` section and ToC links
+  - [ ] Remove unneeded `Project Creation Steps` section
 
 ## Project Setup
 
@@ -81,7 +83,7 @@ npm run lint
 
    Create the Vue project directory and initial files.
 
-   - Navigate to the directory you would like to create the project in
+   - Navigate to the directory you would like to create the project inm run de
    - Run the create Vue command
    - Use the selections you would like for your project
    - Navigate into your project directory and install the dependencies
