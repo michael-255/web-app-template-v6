@@ -83,7 +83,7 @@ npm run lint
 
    Create the Vue project directory and initial files.
 
-   - Navigate to the directory you would like to create the project inm run de
+   - Navigate to the directory you would like to create the project in
    - Run the create Vue command
    - Use the selections you would like for your project
    - Navigate into your project directory and install the dependencies
